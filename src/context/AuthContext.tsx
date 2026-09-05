@@ -38,6 +38,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
+      if (!auth || !(auth as any).app) {
+        setLoading(false);
+        return;
+      }
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
         setLoading(false);

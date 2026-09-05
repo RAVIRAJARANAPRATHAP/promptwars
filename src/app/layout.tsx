@@ -27,10 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <html lang="en" className={inter.variable}>
-        <body className="antialiased">{children}</body>
-      </html>
-    </AuthProvider>
+    <html lang="en" className={inter.variable}>
+      <body className="antialiased">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
+    </html>
   );
 }
