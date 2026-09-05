@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  clerkId      String        @unique
+  name         String?
+  email        String        @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  ideaSessions IdeaSession[]
+}
+
+model IdeaSession {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inputJson    Json          // intake form data
+  ideasJson    Json          // Claude's idea output
+  title        String?       // optional user-given name
+  createdAt    DateTime      @default(now())
+  projectPlans ProjectPlan[]
+
+  @@index([userId])
+}
+
+model ProjectPlan {
+  id            String      @id @default(cuid())
+  ideaSessionId String
+  ideaSession   IdeaSession @relation(fields: [ideaSessionId], references: [id], onDelete: Cascade)
+  ideaTitle     String
+  ideaIndex     Int         // which idea from the session was picked
+  planJson      Json        // Claude's full roadmap output
+  createdAt     DateTime    @default(now())
+
+  @@index([ideaSessionId])
+}
