@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPlan } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ planId: string }> }

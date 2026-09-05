@@ -4,6 +4,8 @@ import { MOCK_IDEAS } from "@/lib/mock-data";
 import { generateWithGemini } from "@/lib/gemini";
 import { saveSession } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 export async function POST(req: NextRequest) {
