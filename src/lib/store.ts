@@ -1,11 +1,64 @@
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
+export interface IdeaSessionInput {
+  skills: string[];
+  interests?: string[];
+  domains?: string[];
+  teamSize?: number;
+  weeks?: number;
+  customSkills?: string;
+  customInterests?: string;
+  [key: string]: unknown;
+}
+
+export interface IdeaItem {
+  title: string;
+  one_line_pitch: string;
+  difficulty: "easy" | "medium" | "hard";
+  domain: string;
+  why_it_fits_you: string;
+  core_problem_solved: string;
+  estimated_weeks: number;
+}
+
+export interface IdeaCollection {
+  ideas: IdeaItem[];
+  [key: string]: unknown;
+}
+
+export interface TechItem {
+  layer: string;
+  choice: string;
+  why: string;
+}
+
+export interface RoadmapWeek {
+  week: number;
+  goal: string;
+  tasks: string[];
+}
+
+export interface Pitfall {
+  problem: string;
+  solution: string;
+}
+
+export interface ProjectPlanData {
+  problem_statement: string;
+  features: { core: string[]; stretch: string[] };
+  tech_stack: TechItem[];
+  roadmap: RoadmapWeek[];
+  improvements: string[];
+  pitfalls: Pitfall[];
+  [key: string]: unknown;
+}
+
 export interface StoredSession {
   id: string;
   userId: string;
-  inputJson: any;
-  ideasJson: any;
+  inputJson: IdeaSessionInput | Record<string, unknown>;
+  ideasJson: IdeaCollection | Record<string, unknown>;
   createdAt: Date;
   projectPlans?: StoredPlan[];
 }
@@ -15,7 +68,7 @@ export interface StoredPlan {
   ideaSessionId: string;
   ideaTitle: string;
   ideaIndex: number;
-  planJson: any;
+  planJson: ProjectPlanData | Record<string, unknown>;
   createdAt: Date;
 }
 
@@ -34,8 +87,8 @@ export async function saveSession(
   userId: string,
   email: string,
   name: string | null,
-  inputJson: any,
-  ideasJson: any
+  inputJson: IdeaSessionInput | Record<string, unknown>,
+  ideasJson: IdeaCollection | Record<string, unknown>
 ): Promise<StoredSession> {
   if (isPrismaConfigured()) {
     try {
@@ -48,16 +101,16 @@ export async function saveSession(
       const session = await prisma.ideaSession.create({
         data: {
           userId: user.id,
-          inputJson,
-          ideasJson,
+          inputJson: inputJson as object,
+          ideasJson: ideasJson as object,
         },
       });
 
       return {
         id: session.id,
         userId: session.userId,
-        inputJson: session.inputJson,
-        ideasJson: session.ideasJson,
+        inputJson: session.inputJson as IdeaSessionInput,
+        ideasJson: session.ideasJson as IdeaCollection,
         createdAt: session.createdAt,
       };
     } catch (e) {
@@ -90,15 +143,15 @@ export async function getSession(sessionId: string): Promise<StoredSession | nul
         return {
           id: session.id,
           userId: session.userId,
-          inputJson: session.inputJson,
-          ideasJson: session.ideasJson,
+          inputJson: session.inputJson as IdeaSessionInput,
+          ideasJson: session.ideasJson as IdeaCollection,
           createdAt: session.createdAt,
           projectPlans: session.projectPlans.map((p) => ({
             id: p.id,
             ideaSessionId: p.ideaSessionId,
             ideaTitle: p.ideaTitle,
             ideaIndex: p.ideaIndex,
-            planJson: p.planJson,
+            planJson: p.planJson as ProjectPlanData,
             createdAt: p.createdAt,
           })),
         };
@@ -120,7 +173,7 @@ export async function savePlan(
   sessionId: string,
   ideaTitle: string,
   ideaIndex: number,
-  planJson: any
+  planJson: ProjectPlanData | Record<string, unknown>
 ): Promise<StoredPlan> {
   if (isPrismaConfigured()) {
     try {
@@ -129,7 +182,7 @@ export async function savePlan(
           ideaSessionId: sessionId,
           ideaTitle,
           ideaIndex,
-          planJson,
+          planJson: planJson as object,
         },
       });
       return {
@@ -137,7 +190,7 @@ export async function savePlan(
         ideaSessionId: plan.ideaSessionId,
         ideaTitle: plan.ideaTitle,
         ideaIndex: plan.ideaIndex,
-        planJson: plan.planJson,
+        planJson: plan.planJson as ProjectPlanData,
         createdAt: plan.createdAt,
       };
     } catch (e) {
@@ -178,7 +231,7 @@ export async function getPlan(planId: string): Promise<StoredPlan | null> {
           ideaSessionId: plan.ideaSessionId,
           ideaTitle: plan.ideaTitle,
           ideaIndex: plan.ideaIndex,
-          planJson: plan.planJson,
+          planJson: plan.planJson as ProjectPlanData,
           createdAt: plan.createdAt,
         };
       }
@@ -203,10 +256,17 @@ export async function getUserSessions(userId: string): Promise<StoredSession[]> 
         return sessions.map((s) => ({
           id: s.id,
           userId: s.userId,
-          inputJson: s.inputJson,
-          ideasJson: s.ideasJson,
+          inputJson: s.inputJson as IdeaSessionInput,
+          ideasJson: s.ideasJson as IdeaCollection,
           createdAt: s.createdAt,
-          projectPlans: s.projectPlans as any,
+          projectPlans: s.projectPlans.map((p) => ({
+            id: p.id,
+            ideaSessionId: s.id,
+            ideaTitle: p.ideaTitle,
+            ideaIndex: 0,
+            planJson: {},
+            createdAt: p.createdAt,
+          })),
         }));
       }
     } catch (e) {

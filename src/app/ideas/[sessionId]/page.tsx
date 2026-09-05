@@ -92,17 +92,19 @@ export default function IdeasPage({ params }: { params: Promise<{ sessionId: str
       <div className="orb orb-1" style={{ position: "fixed", opacity: 0.06 }} />
       <div className="orb orb-2" style={{ position: "fixed", opacity: 0.06 }} />
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
-        {/* Header */}
-        <div style={{ marginBottom: 40 }}>
-          <button
-            onClick={() => router.push("/onboard")}
-            className="btn-ghost"
-            style={{ marginBottom: 20, padding: "6px 0" }}
-          >
-            <ArrowLeft size={14} />
-            New search
-          </button>
+      <main id="main-content">
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
+          {/* Header */}
+          <div style={{ marginBottom: 40 }}>
+            <button
+              onClick={() => router.push("/onboard")}
+              className="btn-ghost"
+              aria-label="Start a new idea search"
+              style={{ marginBottom: 20, padding: "6px 0" }}
+            >
+              <ArrowLeft size={14} aria-hidden="true" />
+              New search
+            </button>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
             <div
               style={{
@@ -259,6 +261,7 @@ export default function IdeasPage({ params }: { params: Promise<{ sessionId: str
           </div>
         )}
       </div>
+      </main>
       <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
   );

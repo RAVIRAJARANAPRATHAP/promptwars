@@ -62,11 +62,13 @@ export default function LandingPage() {
     <div style={{ minHeight: "100vh", background: "var(--bg-primary)" }}>
       <Navbar />
 
-      {/* ── Hero ── */}
-      <section
-        className="hero-bg"
-        style={{ paddingTop: 160, paddingBottom: 100, textAlign: "center", position: "relative" }}
-      >
+      <main id="main-content">
+        {/* ── Hero ── */}
+        <section
+          className="hero-bg"
+          aria-label="Introduction"
+          style={{ paddingTop: 160, paddingBottom: 100, textAlign: "center", position: "relative" }}
+        >
         <div className="orb orb-1" />
         <div className="orb orb-2" />
         <div className="orb orb-3" />
@@ -240,17 +242,19 @@ export default function LandingPage() {
           <p style={{ color: "var(--text-secondary)", marginBottom: 32, fontSize: 16 }}>
             Join hundreds of students who stopped second-guessing and started building.
           </p>
-          <Link href="/sign-up" className="btn-primary" style={{ fontSize: 16, padding: "14px 36px" }}>
+          <Link href="/sign-up" className="btn-primary" style={{ fontSize: 16, padding: "14px 36px" }} aria-label="Get started free with ProjectSpark">
             <span style={{ display: "flex", alignItems: "center", gap: 8, position: "relative", zIndex: 1 }}>
               Get Started Free
-              <ArrowRight size={18} />
+              <ArrowRight size={18} aria-hidden="true" />
             </span>
           </Link>
         </div>
       </section>
+      </main>
 
       {/* ── Footer ── */}
       <footer
+        role="contentinfo"
         style={{
           borderTop: "1px solid var(--border)",
           padding: "32px 24px",
@@ -260,7 +264,7 @@ export default function LandingPage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 8 }}>
-          <Zap size={14} color="#60a5fa" />
+          <Zap size={14} color="#60a5fa" aria-hidden="true" />
           <span style={{ fontWeight: 700, color: "var(--text-secondary)" }}>ProjectSpark</span>
         </div>
         <p>Built for final-year students. Powered by Gemini AI.</p>

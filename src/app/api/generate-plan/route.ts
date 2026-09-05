@@ -3,6 +3,7 @@ import { ROADMAP_GENERATOR_SYSTEM_PROMPT } from "@/lib/prompts";
 import { MOCK_PLAN } from "@/lib/mock-data";
 import { generateWithGemini } from "@/lib/gemini";
 import { savePlan } from "@/lib/store";
+import { validatePlanInput } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -10,11 +11,21 @@ const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 export async function POST(req: NextRequest) {
   try {
-    const { sessionId, ideaIndex, ideaTitle, ideaPitch, skills, weeks } = await req.json();
+    const rawBody = await req.json().catch(() => null);
+    const validation = validatePlanInput(rawBody);
+
+    if (!validation.isValid || !validation.data) {
+      return NextResponse.json(
+        { error: validation.error || "Invalid request payload" },
+        { status: 400 }
+      );
+    }
+
+    const { sessionId, ideaIndex, ideaTitle, ideaPitch, skills, weeks } = validation.data;
 
     const userMessage = `
 Student profile:
-- Skills: ${Array.isArray(skills) ? skills.join(", ") : skills}
+- Skills: ${Array.isArray(skills) && skills.length > 0 ? skills.join(", ") : "General Engineering"}
 - Available time: ${weeks} weeks
 
 Chosen idea:
@@ -30,7 +41,7 @@ Generate a detailed build roadmap for this project. Return JSON only matching th
     const isRealGeminiKey = apiKey && !apiKey.includes("AIzaSyD...");
 
     if (DEMO_MODE || !isRealGeminiKey) {
-      await new Promise((r) => setTimeout(r, 1400));
+      await new Promise((r) => setTimeout(r, 800));
       planJson = MOCK_PLAN;
     } else {
       try {
@@ -47,7 +58,7 @@ Generate a detailed build roadmap for this project. Return JSON only matching th
   } catch (error) {
     console.error("[generate-plan]", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Internal server error" },
+      { error: "An unexpected error occurred while generating the roadmap plan." },
       { status: 500 }
     );
   }

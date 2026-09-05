@@ -42,7 +42,8 @@ export default function SignInPage() {
   };
 
   return (
-    <div
+    <main
+      id="main-content"
       style={{
         minHeight: "100vh",
         background: "var(--bg-primary)",
@@ -69,6 +70,7 @@ export default function SignInPage() {
         {/* Logo Header */}
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div
+            aria-hidden="true"
             style={{
               width: 44,
               height: 44,
@@ -90,6 +92,8 @@ export default function SignInPage() {
 
         {error && (
           <div
+            role="alert"
+            aria-live="assertive"
             style={{
               padding: "10px 14px",
               background: "rgba(239, 68, 68, 0.1)",
@@ -109,6 +113,7 @@ export default function SignInPage() {
           onClick={handleGoogle}
           disabled={loading}
           className="btn-ghost"
+          aria-label="Continue with Google authentication"
           style={{
             width: "100%",
             justifyContent: "center",
@@ -123,7 +128,7 @@ export default function SignInPage() {
             gap: 10,
           }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -153,10 +158,11 @@ export default function SignInPage() {
         {/* Email form */}
         <form onSubmit={handleEmail} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div>
-            <label style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
+            <label htmlFor="signin-email" style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
               Email Address
             </label>
             <input
+              id="signin-email"
               type="email"
               required
               value={email}
@@ -176,10 +182,11 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
+            <label htmlFor="signin-password" style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
               Password
             </label>
             <input
+              id="signin-password"
               type="password"
               required
               value={password}
@@ -202,6 +209,7 @@ export default function SignInPage() {
             type="submit"
             disabled={loading}
             className="btn-primary"
+            aria-label="Sign in"
             style={{
               width: "100%",
               justifyContent: "center",
@@ -212,7 +220,7 @@ export default function SignInPage() {
             }}
           >
             <span style={{ display: "flex", alignItems: "center", gap: 8, position: "relative", zIndex: 1 }}>
-              {loading ? <Loader2 size={16} className="animate-spin" /> : <>Sign In <ArrowRight size={15} /></>}
+              {loading ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <>Sign In <ArrowRight size={15} aria-hidden="true" /></>}
             </span>
           </button>
         </form>
@@ -238,6 +246,6 @@ export default function SignInPage() {
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

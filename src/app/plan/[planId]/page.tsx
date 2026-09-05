@@ -77,11 +77,17 @@ export default function PlanPage({ params }: { params: Promise<{ planId: string 
       <Navbar />
       <div className="orb orb-1" style={{ position: "fixed", opacity: 0.05 }} />
 
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
-        <button onClick={() => router.back()} className="btn-ghost" style={{ marginBottom: 24, padding: "6px 0" }}>
-          <ArrowLeft size={14} />
-          Back to ideas
-        </button>
+      <main id="main-content">
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
+          <button
+            onClick={() => router.back()}
+            className="btn-ghost"
+            aria-label="Back to generated ideas"
+            style={{ marginBottom: 24, padding: "6px 0" }}
+          >
+            <ArrowLeft size={14} aria-hidden="true" />
+            Back to ideas
+          </button>
 
         {loading && <Skeleton />}
         {error && (
@@ -266,6 +272,7 @@ export default function PlanPage({ params }: { params: Promise<{ planId: string 
           </div>
         )}
       </div>
+      </main>
     </div>
   );
 }

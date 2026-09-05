@@ -42,7 +42,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div
+    <main
+      id="main-content"
       style={{
         minHeight: "100vh",
         background: "var(--bg-primary)",
@@ -69,6 +70,7 @@ export default function SignUpPage() {
         {/* Logo Header */}
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div
+            aria-hidden="true"
             style={{
               width: 44,
               height: 44,
@@ -90,6 +92,8 @@ export default function SignUpPage() {
 
         {error && (
           <div
+            role="alert"
+            aria-live="assertive"
             style={{
               padding: "10px 14px",
               background: "rgba(239, 68, 68, 0.1)",
@@ -109,6 +113,7 @@ export default function SignUpPage() {
           onClick={handleGoogle}
           disabled={loading}
           className="btn-ghost"
+          aria-label="Sign up with Google authentication"
           style={{
             width: "100%",
             justifyContent: "center",
@@ -123,7 +128,7 @@ export default function SignUpPage() {
             gap: 10,
           }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -141,7 +146,7 @@ export default function SignUpPage() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
             />
           </svg>
-          Sign up with Google
+          Continue with Google
         </button>
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
@@ -153,10 +158,11 @@ export default function SignUpPage() {
         {/* Email form */}
         <form onSubmit={handleEmail} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div>
-            <label style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
+            <label htmlFor="signup-email" style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
               Email Address
             </label>
             <input
+              id="signup-email"
               type="email"
               required
               value={email}
@@ -176,16 +182,17 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
-              Create Password
+            <label htmlFor="signup-password" style={{ display: "block", fontSize: 13, color: "#94a3b8", marginBottom: 6 }}>
+              Password
             </label>
             <input
+              id="signup-password"
               type="password"
               required
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="At least 6 characters"
+              placeholder="Min. 6 characters"
               style={{
                 width: "100%",
                 padding: "10px 14px",
@@ -203,6 +210,7 @@ export default function SignUpPage() {
             type="submit"
             disabled={loading}
             className="btn-primary"
+            aria-label="Create account"
             style={{
               width: "100%",
               justifyContent: "center",
@@ -213,7 +221,7 @@ export default function SignUpPage() {
             }}
           >
             <span style={{ display: "flex", alignItems: "center", gap: 8, position: "relative", zIndex: 1 }}>
-              {loading ? <Loader2 size={16} className="animate-spin" /> : <>Get Started <ArrowRight size={15} /></>}
+              {loading ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <>Create Account <ArrowRight size={15} aria-hidden="true" /></>}
             </span>
           </button>
         </form>
@@ -239,6 +247,6 @@ export default function SignUpPage() {
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

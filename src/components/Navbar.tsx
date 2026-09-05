@@ -13,10 +13,11 @@ export default function Navbar() {
   const showAuth = !!user || isDemo;
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" aria-label="Main Navigation">
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-2 text-white no-underline" style={{ textDecoration: "none" }}>
+      <Link href="/" className="flex items-center gap-2 text-white no-underline" style={{ textDecoration: "none" }} aria-label="ProjectSpark Homepage">
         <div
+          aria-hidden="true"
           style={{
             width: 32,
             height: 32,
@@ -38,13 +39,13 @@ export default function Navbar() {
       <div className="flex items-center gap-3">
         {showAuth ? (
           <>
-            <Link href="/dashboard" className="btn-ghost">
-              <LayoutDashboard size={15} />
+            <Link href="/dashboard" className="btn-ghost" aria-label="Go to Dashboard">
+              <LayoutDashboard size={15} aria-hidden="true" />
               Dashboard
             </Link>
-            <Link href="/onboard" className="btn-primary" style={{ padding: "8px 18px", fontSize: 14 }}>
+            <Link href="/onboard" className="btn-primary" style={{ padding: "8px 18px", fontSize: 14 }} aria-label="Start New Project Idea Generation">
               <span style={{ display: "flex", alignItems: "center", gap: 6, position: "relative", zIndex: 1 }}>
-                <Plus size={15} />
+                <Plus size={15} aria-hidden="true" />
                 New Project
               </span>
             </Link>
@@ -53,6 +54,9 @@ export default function Navbar() {
               <div style={{ position: "relative" }}>
                 <button
                   onClick={() => setShowMenu(!showMenu)}
+                  aria-haspopup="menu"
+                  aria-expanded={showMenu}
+                  aria-label={user.displayName ? `${user.displayName} account options` : "Account options"}
                   style={{
                     background: "rgba(255,255,255,0.06)",
                     border: "1px solid rgba(255,255,255,0.12)",
@@ -68,14 +72,16 @@ export default function Navbar() {
                   title={user.email || "Account"}
                 >
                   {user.photoURL ? (
-                    <img src={user.photoURL} alt="Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src={user.photoURL} alt="User profile photo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   ) : (
-                    <UserIcon size={18} color="#94a3b8" />
+                    <UserIcon size={18} color="#94a3b8" aria-hidden="true" />
                   )}
                 </button>
 
                 {showMenu && (
                   <div
+                    role="menu"
+                    aria-label="User profile options"
                     style={{
                       position: "absolute",
                       right: 0,
@@ -93,6 +99,7 @@ export default function Navbar() {
                       {user.displayName || user.email}
                     </div>
                     <button
+                      role="menuitem"
                       onClick={() => {
                         setShowMenu(false);
                         signOutUser();
@@ -113,7 +120,7 @@ export default function Navbar() {
                         marginTop: 4,
                       }}
                     >
-                      <LogOut size={14} />
+                      <LogOut size={14} aria-hidden="true" />
                       Sign Out
                     </button>
                   </div>
@@ -123,8 +130,8 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <Link href="/sign-in" className="btn-ghost">Sign In</Link>
-            <Link href="/sign-up" className="btn-primary" style={{ padding: "8px 18px", fontSize: 14 }}>
+            <Link href="/sign-in" className="btn-ghost" aria-label="Sign in to your account">Sign In</Link>
+            <Link href="/sign-up" className="btn-primary" style={{ padding: "8px 18px", fontSize: 14 }} aria-label="Get started free">
               <span style={{ position: "relative", zIndex: 1 }}>
                 {isLanding ? "Get Started Free" : "Get Started"}
               </span>
