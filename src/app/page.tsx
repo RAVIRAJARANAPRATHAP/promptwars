@@ -1,8 +1,8 @@
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { HeroCTA, BottomCTA } from "@/components/HomeCTA";
 import {
-  Zap, Sparkles, Map, BookOpen, ArrowRight,
-  Brain, GitBranch, Layers, Users, Clock, Star
+  Zap, Sparkles, Map, BookOpen,
+  Brain, GitBranch, Layers, Star
 } from "lucide-react";
 
 const features = [
@@ -67,13 +67,13 @@ export default function LandingPage() {
         <section
           className="hero-bg"
           aria-label="Introduction"
-          style={{ paddingTop: 160, paddingBottom: 100, textAlign: "center", position: "relative" }}
+          style={{ paddingTop: "clamp(100px, 16vw, 160px)", paddingBottom: "clamp(50px, 10vw, 100px)", textAlign: "center", position: "relative" }}
         >
         <div className="orb orb-1" />
         <div className="orb orb-2" />
         <div className="orb orb-3" />
 
-        <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)", position: "relative", zIndex: 1 }}>
           {/* Badge */}
           <div
             className="animate-fade-in-up"
@@ -114,23 +114,13 @@ export default function LandingPage() {
             so you can start building — not wondering.
           </p>
 
-          {/* CTAs */}
-          <div className="animate-fade-in-up delay-3" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/sign-up" className="btn-primary" style={{ fontSize: 16, padding: "14px 32px" }}>
-              <span style={{ display: "flex", alignItems: "center", gap: 8, position: "relative", zIndex: 1 }}>
-                Generate My Ideas
-                <ArrowRight size={18} />
-              </span>
-            </Link>
-            <Link href="/sign-in" className="btn-secondary">
-              Sign In
-            </Link>
-          </div>
+          {/* Dynamic Auth-aware CTAs */}
+          <HeroCTA />
 
           {/* Stats row */}
           <div
             className="animate-fade-in-up delay-4"
-            style={{ display: "flex", gap: 40, justifyContent: "center", flexWrap: "wrap", marginTop: 64 }}
+            style={{ display: "flex", gap: "clamp(20px, 6vw, 40px)", justifyContent: "center", flexWrap: "wrap", marginTop: "clamp(36px, 8vw, 64px)" }}
           >
             {stats.map((s) => (
               <div key={s.label} style={{ textAlign: "center" }}>
@@ -143,7 +133,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── How it works ── */}
-      <section style={{ padding: "80px 24px", maxWidth: 960, margin: "0 auto" }}>
+      <section style={{ padding: "clamp(48px, 10vw, 80px) clamp(16px, 4vw, 24px)", maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: "var(--accent-blue)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>
             How it works
@@ -225,12 +215,12 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA Banner ── */}
-      <section style={{ padding: "80px 24px", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+      <section style={{ padding: "clamp(48px, 10vw, 80px) clamp(16px, 4vw, 24px)", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
         <div
           className="glass"
           style={{
             borderRadius: 24,
-            padding: "52px 40px",
+            padding: "clamp(32px, 8vw, 52px) clamp(20px, 6vw, 40px)",
             background: "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08))",
             border: "1px solid rgba(59,130,246,0.2)",
           }}
@@ -242,12 +232,7 @@ export default function LandingPage() {
           <p style={{ color: "var(--text-secondary)", marginBottom: 32, fontSize: 16 }}>
             Join hundreds of students who stopped second-guessing and started building.
           </p>
-          <Link href="/sign-up" className="btn-primary" style={{ fontSize: 16, padding: "14px 36px" }} aria-label="Get started free with ProjectSpark">
-            <span style={{ display: "flex", alignItems: "center", gap: 8, position: "relative", zIndex: 1 }}>
-              Get Started Free
-              <ArrowRight size={18} aria-hidden="true" />
-            </span>
-          </Link>
+          <BottomCTA />
         </div>
       </section>
       </main>

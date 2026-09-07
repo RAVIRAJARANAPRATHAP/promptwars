@@ -52,9 +52,9 @@ export default function DashboardPage() {
       <Navbar />
       <div className="orb orb-1" style={{ position: "fixed", opacity: 0.05 }} />
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
+      <div className="responsive-page-container">
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
               <LayoutDashboard size={20} color="#60a5fa" />
@@ -71,7 +71,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 40 }}>
+        <div className="dashboard-stats-grid">
           {[
             { label: "Idea Sessions", value: sessions.length, icon: Sparkles, color: "#3b82f6" },
             { label: "Ideas Generated", value: totalIdeas, icon: Zap, color: "#8b5cf6" },

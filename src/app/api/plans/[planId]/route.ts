@@ -15,6 +15,7 @@ export async function GET(
 
     return NextResponse.json({ plan });
   } catch (error) {
+    console.error("[plans/planId]", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

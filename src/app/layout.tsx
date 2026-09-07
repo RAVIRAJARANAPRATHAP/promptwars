@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
+import UserSync from "@/components/UserSync";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,6 +9,13 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#080b14",
+};
 
 export const metadata: Metadata = {
   title: "ProjectSpark — AI Project Ideas for Final-Year Students",
@@ -32,7 +40,10 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only sr-only-focusable">
           Skip to main content
         </a>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <UserSync />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ROADMAP_GENERATOR_SYSTEM_PROMPT } from "@/lib/prompts";
-import { MOCK_PLAN } from "@/lib/mock-data";
 import { generateWithGemini } from "@/lib/gemini";
 import { savePlan } from "@/lib/store";
 import { validatePlanInput } from "@/lib/validation";
+import { normalizePlanJson } from "@/lib/normalizers";
 
 export const dynamic = "force-dynamic";
-
-const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,18 +36,18 @@ Generate a detailed build roadmap for this project. Return JSON only matching th
     let planJson: object;
 
     const apiKey = process.env.GEMINI_API_KEY || "";
-    const isRealGeminiKey = apiKey && !apiKey.includes("AIzaSyD...");
+    const hasValidKey = apiKey && !apiKey.includes("AIzaSyD...");
 
-    if (DEMO_MODE || !isRealGeminiKey) {
-      await new Promise((r) => setTimeout(r, 800));
-      planJson = MOCK_PLAN;
-    } else {
+    if (hasValidKey) {
       try {
-        planJson = await generateWithGemini(ROADMAP_GENERATOR_SYSTEM_PROMPT, userMessage);
+        const rawAiResult = await generateWithGemini(ROADMAP_GENERATOR_SYSTEM_PROMPT, userMessage);
+        planJson = normalizePlanJson(rawAiResult, validation.data);
       } catch (geminiError) {
-        console.warn("[generate-plan] Gemini API call failed, falling back to mock:", geminiError);
-        planJson = MOCK_PLAN;
+        console.warn("[generate-plan] Gemini API call failed, generating tailored fallback plan:", geminiError);
+        planJson = normalizePlanJson(null, validation.data);
       }
+    } else {
+      planJson = normalizePlanJson(null, validation.data);
     }
 
     const plan = await savePlan(sessionId, ideaTitle, ideaIndex, planJson);

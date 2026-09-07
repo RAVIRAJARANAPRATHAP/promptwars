@@ -1,12 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sanitizeString } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    const { uid, email, name } = await req.json();
-    if (!uid) return NextResponse.json({ error: "Missing uid" }, { status: 400 });
+    const rawBody = await req.json().catch(() => null);
+    if (!rawBody || typeof rawBody !== "object") {
+      return NextResponse.json({ error: "Invalid request payload" }, { status: 400 });
+    }
+
+    const uid = sanitizeString(rawBody.uid, 128);
+    const email = sanitizeString(rawBody.email, 128);
+    const name = sanitizeString(rawBody.name, 100);
+
+    if (!uid) return NextResponse.json({ error: "Missing or invalid uid" }, { status: 400 });
 
     if (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes("USER:PASSWORD@HOST/DATABASE")) {
       try {

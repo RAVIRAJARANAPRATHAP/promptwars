@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import Navbar from "@/components/Navbar";
 import {
-  Sparkles, Clock, Users, ChevronRight,
+  Sparkles, Clock, ChevronRight,
   Zap, Target, Lightbulb, Loader2, ArrowLeft
 } from "lucide-react";
 
@@ -93,7 +93,7 @@ export default function IdeasPage({ params }: { params: Promise<{ sessionId: str
       <div className="orb orb-2" style={{ position: "fixed", opacity: 0.06 }} />
 
       <main id="main-content">
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
+        <div className="responsive-page-container" style={{ maxWidth: 1100 }}>
           {/* Header */}
           <div style={{ marginBottom: 40 }}>
             <button
@@ -123,7 +123,7 @@ export default function IdeasPage({ params }: { params: Promise<{ sessionId: str
               Your personalised project ideas
             </h1>
           </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: 15, marginLeft: 52 }}>
+          <p style={{ color: "var(--text-secondary)", fontSize: 15, marginTop: 4 }}>
             Click any idea to generate a full development roadmap and build plan.
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function IdeasPage({ params }: { params: Promise<{ sessionId: str
         )}
 
         {/* Ideas grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 20 }}>
+        <div className="ideas-grid">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <IdeaCardSkeleton key={i} />)
             : ideas.map((idea, i) => (

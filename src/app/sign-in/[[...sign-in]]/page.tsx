@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
@@ -8,11 +8,17 @@ import { Zap, Loader2, ArrowRight } from "lucide-react";
 
 export default function SignInPage() {
   const router = useRouter();
-  const { signInWithGoogle, signInWithEmail } = useAuth();
+  const { user, loading: authLoading, signInWithGoogle, signInWithEmail } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [user, authLoading, router]);
 
   const handleGoogle = async () => {
     setError("");
@@ -20,8 +26,8 @@ export default function SignInPage() {
     try {
       await signInWithGoogle();
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Failed to sign in with Google");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to sign in with Google");
     } finally {
       setLoading(false);
     }
@@ -34,8 +40,8 @@ export default function SignInPage() {
     try {
       await signInWithEmail(email, password);
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Invalid email or password");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -226,7 +232,7 @@ export default function SignInPage() {
         </form>
 
         <div style={{ textAlign: "center", marginTop: 22, fontSize: 13, color: "#94a3b8" }}>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/sign-up" style={{ color: "#60a5fa", textDecoration: "none", fontWeight: 600 }}>
             Sign up
           </Link>

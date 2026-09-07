@@ -78,7 +78,7 @@ export default function PlanPage({ params }: { params: Promise<{ planId: string 
       <div className="orb orb-1" style={{ position: "fixed", opacity: 0.05 }} />
 
       <main id="main-content">
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px", position: "relative", zIndex: 1 }}>
+        <div className="responsive-page-container" style={{ maxWidth: 900 }}>
           <button
             onClick={() => router.back()}
             className="btn-ghost"
@@ -117,7 +117,7 @@ export default function PlanPage({ params }: { params: Promise<{ planId: string 
             {/* Features */}
             <div className="animate-fade-in-up delay-1">
               <SectionTitle icon={<CheckCircle2 size={18} color="#10b981" />} title="Features" color="#10b981" />
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+              <div className="features-grid">
                 <div className="glass" style={{ padding: 20, borderRadius: 14 }}>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#34d399", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }}>
                     ✅ Core (MVP)
@@ -150,7 +150,7 @@ export default function PlanPage({ params }: { params: Promise<{ planId: string 
             {/* Tech Stack */}
             <div className="animate-fade-in-up delay-2">
               <SectionTitle icon={<Code2 size={18} color="#3b82f6" />} title="Tech Stack" color="#3b82f6" />
-              <div className="glass" style={{ borderRadius: 14, overflow: "hidden" }}>
+              <div className="glass table-scroll-container">
                 <table className="tech-table">
                   <thead>
                     <tr>
@@ -227,7 +227,7 @@ export default function PlanPage({ params }: { params: Promise<{ planId: string 
             {/* Pitfalls */}
             <div className="animate-fade-in-up delay-5">
               <SectionTitle icon={<AlertTriangle size={18} color="#f43f5e" />} title="Common Pitfalls to Avoid" color="#f43f5e" />
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: 14 }}>
+              <div className="pitfalls-grid">
                 {plan.pitfalls.map((p, i) => (
                   <div key={i} className="glass" style={{ padding: 20, borderRadius: 12 }}>
                     <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>

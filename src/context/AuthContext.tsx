@@ -32,26 +32,31 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const isAuthConfigured = Boolean(auth && "app" in auth && (auth as { app?: unknown }).app);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(isAuthConfigured);
   const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
   useEffect(() => {
+    if (!isAuthConfigured) return;
+
     try {
-      if (!auth || !(auth as any).app) {
-        setLoading(false);
-        return;
-      }
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-        setLoading(false);
-      });
+      const unsubscribe = onAuthStateChanged(
+        auth,
+        (currentUser) => {
+          setUser(currentUser);
+          setLoading(false);
+        },
+        (error) => {
+          console.warn("[AuthContext] Firebase auth listener error:", error);
+          setLoading(false);
+        }
+      );
       return () => unsubscribe();
     } catch (e) {
-      console.warn("[AuthContext] Firebase auth listener fallback:", e);
-      setLoading(false);
+      console.warn("[AuthContext] Firebase auth subscription failed:", e);
     }
-  }, []);
+  }, [isAuthConfigured]);
 
   const signInWithGoogle = async () => {
     try {

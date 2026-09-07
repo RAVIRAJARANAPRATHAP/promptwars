@@ -15,6 +15,7 @@ export async function GET(
 
     return NextResponse.json({ session });
   } catch (error) {
+    console.error("[sessions/sessionId]", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

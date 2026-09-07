@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ sessions });
   } catch (error) {
+    console.error("[sessions]", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

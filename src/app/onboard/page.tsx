@@ -163,13 +163,8 @@ export default function OnboardPage() {
 
       <main id="main-content">
         <div
-          style={{
-            maxWidth: 700,
-            margin: "0 auto",
-            padding: "100px 24px 60px",
-            position: "relative",
-            zIndex: 1,
-          }}
+          className="responsive-page-container"
+          style={{ maxWidth: 700 }}
         >
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 40 }}>
@@ -212,8 +207,8 @@ export default function OnboardPage() {
 
           {/* Card */}
           <div
-            className="glass animate-scale-in"
-            style={{ borderRadius: 20, padding: "32px", marginBottom: 24 }}
+            className="glass responsive-card animate-scale-in"
+            style={{ marginBottom: 24 }}
           >
             <StepProgress current={step} total={STEPS.length} />
 
@@ -286,7 +281,7 @@ export default function OnboardPage() {
                     <Globe size={14} aria-hidden="true" />
                     Preferred Project Type (pick up to 3)
                   </span>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 10 }} role="group" aria-label="Preferred Project Types">
+                  <div className="domain-grid" role="group" aria-label="Preferred Project Types">
                     {DOMAINS.map((d) => (
                       <button
                         key={d.id}

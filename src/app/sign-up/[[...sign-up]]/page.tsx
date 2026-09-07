@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
@@ -8,11 +8,17 @@ import { Zap, Loader2, ArrowRight } from "lucide-react";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const { signInWithGoogle, signUpWithEmail } = useAuth();
+  const { user, loading: authLoading, signInWithGoogle, signUpWithEmail } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [user, authLoading, router]);
 
   const handleGoogle = async () => {
     setError("");
@@ -20,8 +26,8 @@ export default function SignUpPage() {
     try {
       await signInWithGoogle();
       router.push("/onboard");
-    } catch (err: any) {
-      setError(err.message || "Failed to sign up with Google");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to sign up with Google");
     } finally {
       setLoading(false);
     }
@@ -34,8 +40,8 @@ export default function SignUpPage() {
     try {
       await signUpWithEmail(email, password);
       router.push("/onboard");
-    } catch (err: any) {
-      setError(err.message || "Could not create account");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Could not create account");
     } finally {
       setLoading(false);
     }
