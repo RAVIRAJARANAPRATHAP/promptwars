@@ -12,6 +12,7 @@ export interface NormalizedIdea {
 
 export interface NormalizedIdeasResult {
   ideas: NormalizedIdea[];
+  [key: string]: unknown;
 }
 
 export interface NormalizedPlanResult {
@@ -21,6 +22,7 @@ export interface NormalizedPlanResult {
   roadmap: { week: number; goal: string; tasks: string[] }[];
   improvements: string[];
   pitfalls: { problem: string; solution: string }[];
+  [key: string]: unknown;
 }
 
 function normalizeDifficulty(raw: unknown): "easy" | "medium" | "hard" {

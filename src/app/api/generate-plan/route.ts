@@ -3,7 +3,7 @@ import { ROADMAP_GENERATOR_SYSTEM_PROMPT } from "@/lib/prompts";
 import { generateWithGemini } from "@/lib/gemini";
 import { savePlan } from "@/lib/store";
 import { validatePlanInput } from "@/lib/validation";
-import { normalizePlanJson } from "@/lib/normalizers";
+import { normalizePlanJson, NormalizedPlanResult } from "@/lib/normalizers";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +33,7 @@ Chosen idea:
 Generate a detailed build roadmap for this project. Return JSON only matching the schema.
     `.trim();
 
-    let planJson: object;
+    let planJson: NormalizedPlanResult;
 
     const apiKey = process.env.GEMINI_API_KEY || "";
     const hasValidKey = apiKey && !apiKey.includes("AIzaSyD...");

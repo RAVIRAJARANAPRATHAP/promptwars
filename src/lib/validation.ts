@@ -14,6 +14,7 @@ export interface ValidatedIdeasInput {
   userId: string;
   userEmail: string;
   userName: string;
+  [key: string]: unknown;
 }
 
 export interface ValidatedPlanInput {
@@ -23,6 +24,7 @@ export interface ValidatedPlanInput {
   ideaPitch: string;
   skills: string[];
   weeks: number;
+  [key: string]: unknown;
 }
 
 /**

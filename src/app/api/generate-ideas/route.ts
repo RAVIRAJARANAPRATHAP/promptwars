@@ -3,7 +3,7 @@ import { IDEA_GENERATOR_SYSTEM_PROMPT } from "@/lib/prompts";
 import { generateWithGemini } from "@/lib/gemini";
 import { saveSession } from "@/lib/store";
 import { validateIdeasInput } from "@/lib/validation";
-import { normalizeIdeasJson, generateDynamicFallbackIdeas } from "@/lib/normalizers";
+import { normalizeIdeasJson, generateDynamicFallbackIdeas, NormalizedIdeasResult } from "@/lib/normalizers";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +52,7 @@ Student profile:
 Generate 6 project ideas strictly tailored to this profile. Return JSON only matching the schema.
     `.trim();
 
-    let ideasJson: object;
+    let ideasJson: NormalizedIdeasResult;
 
     const apiKey = process.env.GEMINI_API_KEY || "";
     const hasValidKey = apiKey && !apiKey.includes("AIzaSyD...");
